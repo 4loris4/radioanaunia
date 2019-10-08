@@ -28,6 +28,7 @@ class ArchivioTabState extends State<ArchivioTab> with AutomaticKeepAliveClientM
 
   void updateArchivioState(Audio audio) {
     durationListener?.cancel();
+    Future<Null> stopTimer;
     durationListener = audioPlayer.onAudioPositionChanged.listen((progress) {
       if(audio.duration == 0) {
         audio.duration = audioPlayer.duration.inSeconds.toDouble();
@@ -35,6 +36,17 @@ class ArchivioTabState extends State<ArchivioTab> with AutomaticKeepAliveClientM
 
       if(archivioShouldUpdate) {
         archivioState?.setState(() => audio.progress = progress.inSeconds.toDouble());
+      }
+
+      if(stopTimer == null && audio.duration > 0 && audio.progress >= audio.duration) {
+        stopTimer = Future.delayed(new Duration(seconds: 1), () {
+          audio.progress = 0;
+          setState(() {
+            paused = false;
+            currentlyPlaying = "";
+          });
+          updateRadio();
+        });
       }
     });
   }
@@ -58,6 +70,7 @@ class ArchivioTabState extends State<ArchivioTab> with AutomaticKeepAliveClientM
         alignment: new Alignment(0, 0),
         children: <Widget>[
           new IconButton(icon: new Icon(audio.url == currentlyPlaying && !paused ? Icons.pause : Icons.play_arrow, color: Colors.white), iconSize: 30, onPressed: () {
+            buffering = true;
             setState(() {
               paused = (currentlyPlaying == audio.url && !paused);
               currentlyPlaying = audio.url;

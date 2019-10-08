@@ -69,14 +69,14 @@ class App extends StatefulWidget {
 class AppState extends State<App> {
   Widget currentScreen = new RadioTab();
   ScreenType currentScreenType = ScreenType.Radio;
-  String appBarTitle = "Astronomia Valli del Noce";
+  Widget appBarTitle = new Image.asset("assets/logoTitle.png", height: 45);
 
   ClipRect navigationDrawer() {
     return new ClipRect(
       child: new BackdropFilter(
         filter: new ImageFilter.blur(sigmaX: 2.5, sigmaY: 2.5),
         child: new Theme(
-          data: Theme.of(context).copyWith(canvasColor: Colors.white.withOpacity(0.1)),
+          data: Theme.of(context).copyWith(canvasColor: Colors.black.withOpacity(0.25)),
           child: new Drawer(
             child: new ListView(
               children: <Widget>[
@@ -84,7 +84,6 @@ class AppState extends State<App> {
                   child: App.backgroundImage("assets/logo.png"),
                   padding: EdgeInsets.all(0.0),
                 ),
-                new Divider(),
                 new ListTile(
                   leading: new Icon(Icons.radio, color: Colors.white),
                   title: new Text("Radio", style: new TextStyle(color: Colors.white)),
@@ -122,24 +121,24 @@ class AppState extends State<App> {
 
   void setScreen(ScreenType screenType) {
     Widget screen;
-    String appBarTitle = "Radio";
+    Widget appBarTitle = new Image.asset("assets/logoTitle.png", height: 45);
 
     switch (screenType) {
       case ScreenType.Radio:
         screen = new RadioTab();
-        appBarTitle = "Radio";
+        appBarTitle = new Image.asset("assets/logoTitle.png", height: 45);
         break;
       case ScreenType.Archivio:
         screen = new ArchivioTab();
-        appBarTitle = "Archivio";
+        appBarTitle = new Text("Archivio", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white));
         break;
       case ScreenType.Webcam:
         screen = new WebcamTab();
-        appBarTitle = "Webcam";
+    appBarTitle = new Text("Webcam", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white));
         break;
       case ScreenType.Contattaci:
         screen = new ContattaciTab();
-        appBarTitle = "Contattaci";
+    appBarTitle = new Text("Contattaci", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white));
         break;
       default:
         print("Invalid ScreenType passed to setScreen() function!");
@@ -178,6 +177,9 @@ class AppState extends State<App> {
 
     audioPlayer.onPlayerStateChanged.listen((playerState) {
       setState(() => buffering = (playerState != AudioPlayerState.PLAYING));
+      if(playerState == AudioPlayerState.PLAYING && paused) {
+        audioPlayer.pause();
+      }
     });
   }
 
@@ -185,7 +187,7 @@ class AppState extends State<App> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
-        title: Text(appBarTitle, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+        title: appBarTitle,
         backgroundColor: backgroundColor
       ),
       body: currentScreen,

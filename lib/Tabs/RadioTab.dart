@@ -79,7 +79,7 @@ class RadioTabState extends State<RadioTab> {
 
   String toTitleCase(String string) {
     String tmpString = string.toLowerCase();
-    String match = " -.'0123456789";
+    String match = " -.0123456789";
     List<String> substrings;
 
     for(int i = 0; i < match.length; i++) {
@@ -106,7 +106,9 @@ class RadioTabState extends State<RadioTab> {
       try {
         PaletteGenerator.fromImageProvider(NetworkImage(coverURL), size: Size(100, 100), region: Offset.zero & Size(100, 100)).then((paletteGenerator) {
           if(paletteGenerator.dominantColor?.color != null && paletteGenerator.dominantColor?.color != coverColor) {
-            setState(() => coverColor = paletteGenerator.dominantColor?.color);
+            if(mounted) {
+              setState(() => coverColor = paletteGenerator.dominantColor?.color);
+            }
           }
         });
       }
@@ -162,7 +164,7 @@ class RadioTabState extends State<RadioTab> {
                   new Center(child: new IconButton(padding: new EdgeInsets.all(0), icon: new Icon(currentlyPlaying != radio.url ? Icons.play_arrow : Icons.stop , color: Colors.white), iconSize: 60, onPressed: (){
                     setState(() {
                       paused = false;
-                      currentlyPlaying == radio.url ? currentlyPlaying = "" : currentlyPlaying = radio.url;
+                      currentlyPlaying = currentlyPlaying == radio.url ? "" : radio.url;
                     });
                     updateRadio();
                   })),
