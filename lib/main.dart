@@ -1,0 +1,219 @@
+import 'dart:async';
+
+import 'package:audioplayer/audioplayer.dart';
+import 'package:flutter/material.dart';
+import 'package:radioanaunia/Tabs/RadioTab.dart';
+import 'package:radioanaunia/Tabs/ArchivioTab.dart';
+import 'package:radioanaunia/Tabs/WebcamTab.dart';
+import 'package:radioanaunia/Tabs/ContattaciTab.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
+import 'package:url_launcher/url_launcher.dart' as urlLauncher;
+import 'dart:ui';
+
+void main() => runApp(new MaterialApp(home: new App()));
+
+enum ScreenType { Radio, Archivio, Webcam, SitoWeb, Contattaci }
+
+const Color mainColor = Color(0xFF00a9ed);
+const Color backgroundColor = Colors.blueGrey;
+
+AudioPlayer audioPlayer = new AudioPlayer();
+String currentlyPlaying = "";
+String previouslyPlaying = " ";
+bool paused = false;
+bool buffering = false;
+
+void updateRadio({double progress}) {
+  if(paused) {
+    audioPlayer.pause();
+  }
+  else if(currentlyPlaying == "") {
+    audioPlayer.stop();
+  }
+  else {
+    if(currentlyPlaying != previouslyPlaying) {
+      audioPlayer.stop();
+    }
+    audioPlayer.play(currentlyPlaying);
+
+    StreamSubscription<AudioPlayerState> bufferingSeek;
+    bufferingSeek = audioPlayer.onPlayerStateChanged.listen((playerState) {
+      if(playerState == AudioPlayerState.PLAYING) {
+        audioPlayer.seek(progress == null ? 0 : progress);
+        bufferingSeek.cancel();
+      }
+    });
+  }
+  previouslyPlaying = currentlyPlaying;
+}
+
+class App extends StatefulWidget {
+  const App({Key key}) : super(key: key);
+
+  static Container backgroundImage(String imageURL) {
+    return new Container(
+      decoration: new BoxDecoration(
+        image: new DecorationImage(
+          image: new AssetImage(imageURL),
+          fit: BoxFit.scaleDown,
+        ),
+      ),
+    );
+  }
+
+  @override
+  AppState createState() => AppState();
+}
+
+class AppState extends State<App> {
+  Widget currentScreen = new RadioTab();
+  ScreenType currentScreenType = ScreenType.Radio;
+  String appBarTitle = "Astronomia Valli del Noce";
+
+  ClipRect navigationDrawer() {
+    return new ClipRect(
+      child: new BackdropFilter(
+        filter: new ImageFilter.blur(sigmaX: 2.5, sigmaY: 2.5),
+        child: new Theme(
+          data: Theme.of(context).copyWith(canvasColor: Colors.white.withOpacity(0.1)),
+          child: new Drawer(
+            child: new ListView(
+              children: <Widget>[
+                new DrawerHeader(
+                  child: App.backgroundImage("assets/logo.png"),
+                  padding: EdgeInsets.all(0.0),
+                ),
+                new Divider(),
+                new ListTile(
+                  leading: new Icon(Icons.radio, color: Colors.white),
+                  title: new Text("Radio", style: new TextStyle(color: Colors.white)),
+                  onTap: () => drawerTilePressed(ScreenType.Radio),
+                ),
+                new Divider(),
+                new ListTile(
+                  leading: new Icon(FontAwesomeIcons.database, color: Colors.white),
+                  title: new Text("Archivio", style: new TextStyle(color: Colors.white)),
+                  onTap: () => drawerTilePressed(ScreenType.Archivio),
+                ),
+                new ListTile(
+                  leading: new Icon(FontAwesomeIcons.images, color: Colors.white),
+                  title: new Text("Webcam", style: new TextStyle(color: Colors.white)),
+                  onTap: () => drawerTilePressed(ScreenType.Webcam),
+                ),
+                new ListTile(
+                  leading: new Icon(FontAwesomeIcons.globeAmericas, color: Colors.white),
+                  title: new Text("Sito Web", style: new TextStyle(color: Colors.white)),
+                  onTap: () => drawerTilePressed(ScreenType.SitoWeb),
+                ),
+                new ListTile(
+                  leading: new Icon(Icons.contact_mail, color: Colors.white),
+                  title: new Text("Contattaci", style: new TextStyle(color: Colors.white)),
+                  onTap: () => drawerTilePressed(ScreenType.Contattaci),
+                ),
+                new Divider()
+              ],
+            )
+          ),
+        )
+      )
+    );
+  }
+
+  void setScreen(ScreenType screenType) {
+    Widget screen;
+    String appBarTitle = "Radio";
+
+    switch (screenType) {
+      case ScreenType.Radio:
+        screen = new RadioTab();
+        appBarTitle = "Radio";
+        break;
+      case ScreenType.Archivio:
+        screen = new ArchivioTab();
+        appBarTitle = "Archivio";
+        break;
+      case ScreenType.Webcam:
+        screen = new WebcamTab();
+        appBarTitle = "Webcam";
+        break;
+      case ScreenType.Contattaci:
+        screen = new ContattaciTab();
+        appBarTitle = "Contattaci";
+        break;
+      default:
+        print("Invalid ScreenType passed to setScreen() function!");
+        break;
+    }
+    setState(() {
+      this.currentScreen = screen;
+      currentScreenType = screenType;
+      this.appBarTitle = appBarTitle;
+    });
+  }
+
+  void drawerTilePressed(ScreenType btnType) {
+    Navigator.of(context).pop();
+
+    switch (btnType) {
+      case ScreenType.SitoWeb:
+        openWebsite("https://radioanaunia.it/");
+        return;
+      case ScreenType.Radio:
+      case ScreenType.Archivio:
+      case ScreenType.Webcam:
+      case ScreenType.Contattaci:
+        setScreen(btnType);
+        break;
+      default:
+        print("Invalid ScreenType passed to drawerTilePressed() function!");
+        break;
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() => setScreen(currentScreenType));
+
+    audioPlayer.onPlayerStateChanged.listen((playerState) {
+      setState(() => buffering = (playerState != AudioPlayerState.PLAYING));
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      appBar: AppBar(
+        title: Text(appBarTitle, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+        backgroundColor: backgroundColor
+      ),
+      body: currentScreen,
+      drawer: navigationDrawer(),
+    );
+  }
+}
+
+void openWebsite(String url) async {
+  if (url.startsWith("http") || url.startsWith("https")) {
+    try {
+      await launch(
+        url,
+        option: new CustomTabsOption(
+            toolbarColor: backgroundColor,
+            enableDefaultShare: true,
+            enableUrlBarHiding: true,
+            showPageTitle: true,
+            animation: CustomTabsAnimation.fade()
+        ),
+      );
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+  else {
+    if (await urlLauncher.canLaunch(url)) {
+      urlLauncher.launch(url);
+    }
+  }
+}

@@ -1,0 +1,30 @@
+name: radioanaunia
+description: Radio Anaunia, radio locale che trasmette da Cles in provincia di Trento.
+
+version: 1.0.0+1
+
+environment:
+    sdk: ">=2.2.0 <3.0.0"
+
+dependencies:
+    flutter:
+        sdk: flutter
+
+    cupertino_icons: ^0.1.2
+    font_awesome_flutter: ^8.4.0
+    url_launcher: ^5.0.2
+    flutter_custom_tabs: ^0.6.0
+    palette_generator: ^0.2.0
+    audioplayer: ^0.5.2
+    transparent_image: ^1.0.0
+    http: ^0.12.0+2
+
+dev_dependencies:
+    flutter_test:
+        sdk: flutter
+
+flutter:
+    assets:
+        - assets/
+        
+    uses-material-design: true
