@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'package:radioanaunia/main.dart';
@@ -26,6 +27,7 @@ class RadioTabState extends State<RadioTab> {
   List<Duration> coverAnimationDuration = [new Duration(milliseconds: 500), new Duration(milliseconds: 1500)];
   List<Curve> coverAnimation = [Curves.ease, Curves.elasticOut];
   Timer coverUpdateTimer;
+  Timer titleScroller;
 
   @override
   void initState() {
@@ -38,18 +40,35 @@ class RadioTabState extends State<RadioTab> {
   @override
   void dispose() {
     super.dispose();
-    coverUpdateTimer.cancel();
+    coverUpdateTimer?.cancel();
+    titleScroller?.cancel();
   }
 
   void initTitleScroller() async {
-    new Timer(new Duration(seconds: 2), () {
-      if(controller.hasClients && ((trackName.length-screenWidthLetters)*150) > 0) controller.animateTo(controller.position.maxScrollExtent, duration: new Duration(milliseconds: (trackName.length-screenWidthLetters)*150), curve: Curves.linear);
-      bool scrollToEnd = false;
-      new Timer.periodic(new Duration(milliseconds: 2000+(trackName.length-screenWidthLetters)*150), (_) {
-        if(controller.hasClients && ((trackName.length-screenWidthLetters)*150) > 0) controller.animateTo(scrollToEnd ? controller.position.maxScrollExtent : 0, duration: new Duration(milliseconds: (trackName.length-screenWidthLetters)*150), curve: Curves.linear);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      bool scrollToEnd = true;
+      titleScroller?.cancel();
+
+      void scroll() {
+        if(controller.hasClients) {
+          controller.animateTo(scrollToEnd ? controller.position.maxScrollExtent : 0, duration: new Duration(milliseconds: 50*trackName.length), curve: Curves.linear);
+        }
         scrollToEnd = !scrollToEnd;
+      }
+
+      titleScroller = new Timer.periodic((new Duration(milliseconds: 2000+50*trackName.length)), (_) {
+        scroll();
       });
     });
+    setState(() {});
+  }
+
+  void setTrackName(String name) {
+    setState(() {
+      trackName = name;
+    });
+    titleScroller?.cancel();
+    controller.animateTo(0, duration: new Duration(milliseconds: 250), curve: Curves.easeOut).then((_) => initTitleScroller());
   }
 
   void loadCover() async {
@@ -59,7 +78,7 @@ class RadioTabState extends State<RadioTab> {
       String title = toTitleCase(response.body.substring(response.body.indexOf("=")+1));
       setState(() {
         authorName = title.split(" - ").length > 1 ? title.split(" - ")[0] : "";
-        trackName = title.split(" - ").length > 1 ? title.split(" - ")[1] : title;
+        setTrackName(title.split(" - ").length > 1 ? title.split(" - ")[1] : title);
       });
       try { response = await http.get("https://itunes.apple.com/search?media=music&country=us&term=${title.toUpperCase().replaceAll(" ", "+")}", headers: {"Accept": "application/json"}); } on Exception { return; }
       if(title.toUpperCase() == "IN CONDOTTA" || title.toUpperCase() == "ORA ESATTA") {
@@ -104,7 +123,7 @@ class RadioTabState extends State<RadioTab> {
     }
     else {
       try {
-        PaletteGenerator.fromImageProvider(NetworkImage(coverURL), size: Size(100, 100), region: Offset.zero & Size(100, 100)).then((paletteGenerator) {
+        PaletteGenerator.fromImageProvider(NetworkImage(coverURL)).then((paletteGenerator) {
           if(paletteGenerator.dominantColor?.color != null && paletteGenerator.dominantColor?.color != coverColor) {
             if(mounted) {
               setState(() => coverColor = paletteGenerator.dominantColor?.color);

@@ -37,15 +37,25 @@ class ArchivioTabState extends State<ArchivioTab> with AutomaticKeepAliveClientM
       if(archivioShouldUpdate) {
         archivioState?.setState(() => audio.progress = progress.inSeconds.toDouble());
       }
+      else {
+        audio.progress = progress.inSeconds.toDouble();
+      }
 
       if(stopTimer == null && audio.duration > 0 && audio.progress >= audio.duration) {
         stopTimer = Future.delayed(new Duration(seconds: 1), () {
           audio.progress = 0;
-          setState(() {
+          if(archivioShouldUpdate) {
+            setState(() {
+              paused = false;
+              currentlyPlaying = "";
+            });
+          }
+          else {
             paused = false;
             currentlyPlaying = "";
-          });
+          }
           updateRadio();
+          stopTimer = null;
         });
       }
     });
