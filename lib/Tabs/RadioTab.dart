@@ -49,15 +49,11 @@ class RadioTabState extends State<RadioTab> {
       bool scrollToEnd = true;
       titleScroller?.cancel();
 
-      void scroll() {
+      titleScroller = new Timer.periodic((new Duration(milliseconds: 2000+50*trackName.length)), (_) {
         if(controller.hasClients) {
           controller.animateTo(scrollToEnd ? controller.position.maxScrollExtent : 0, duration: new Duration(milliseconds: 50*trackName.length), curve: Curves.linear);
         }
         scrollToEnd = !scrollToEnd;
-      }
-
-      titleScroller = new Timer.periodic((new Duration(milliseconds: 2000+50*trackName.length)), (_) {
-        scroll();
       });
     });
     setState(() {});

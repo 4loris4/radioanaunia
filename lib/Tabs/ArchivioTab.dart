@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:radioanaunia/main.dart' as prefix0;
 import '../main.dart';
 
 class ArchivioTab extends StatefulWidget {
@@ -101,8 +102,8 @@ class ArchivioTabState extends State<ArchivioTab> with AutomaticKeepAliveClientM
             audioPlayer.seek(value);
           }
         },
-        activeColor: Colors.white,
-        inactiveColor: Colors.black,
+        activeColor: prefix0.mainColor,
+        inactiveColor: Colors.white,
       ),
       trailing: new Text(audio.duration == 0 ? "--:--" : "‒${((audio.duration - audio.progress)~/60).abs().toString()}:${((audio.duration - audio.progress).abs()%60).toInt() < 10 ? "0" : ""}${((audio.duration - audio.progress).abs()%60).toInt().toString()}",
           style: new TextStyle(color: Colors.white)

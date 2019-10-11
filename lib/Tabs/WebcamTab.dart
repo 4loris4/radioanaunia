@@ -89,7 +89,7 @@ class WebcamTabState extends State<WebcamTab> {
             child: new Padding(
               padding: const EdgeInsets.all(10.0),
               child: new FloatingActionButton(
-                backgroundColor: prefix0.mainColor,
+                backgroundColor: prefix0.secondaryColror,
                 child: new Icon(Icons.refresh),
                 onPressed: () => setState(() {})
               ),

@@ -13,10 +13,11 @@ import 'dart:ui';
 
 void main() => runApp(new MaterialApp(home: new App()));
 
-enum ScreenType { Radio, Archivio, Webcam, SitoWeb, Contattaci }
+enum ScreenType { Radio, Archivio, Webcam, Youtube, SitoWeb, Contattaci }
 
 const Color mainColor = Color(0xFF00a9ed);
-const Color backgroundColor = Colors.blueGrey;
+const Color backgroundColor = Colors.black;
+const Color secondaryColror = Colors.blueAccent;
 
 AudioPlayer audioPlayer = new AudioPlayer();
 String currentlyPlaying = "";
@@ -78,39 +79,49 @@ class AppState extends State<App> {
         child: new Theme(
           data: Theme.of(context).copyWith(canvasColor: Colors.black.withOpacity(0.25)),
           child: new Drawer(
-            child: new ListView(
+            child: new Stack(
               children: <Widget>[
-                new DrawerHeader(
-                  child: App.backgroundImage("assets/logo.png"),
-                  padding: EdgeInsets.all(0.0),
+                new ListView(
+                  children: <Widget>[
+                    new DrawerHeader(
+                      child: App.backgroundImage("assets/logo.png"),
+                      padding: EdgeInsets.all(0.0),
+                    ),
+                    new ListTile(
+                      leading: new Icon(Icons.radio, color: Colors.white),
+                      title: new Text("Radio", style: new TextStyle(color: Colors.white)),
+                      onTap: () => drawerTilePressed(ScreenType.Radio),
+                    ),
+                    new Divider(),
+                    new ListTile(
+                      leading: new Icon(FontAwesomeIcons.database, color: Colors.white),
+                      title: new Text("Archivio", style: new TextStyle(color: Colors.white)),
+                      onTap: () => drawerTilePressed(ScreenType.Archivio),
+                    ),
+                    new ListTile(
+                      leading: new Icon(FontAwesomeIcons.images, color: Colors.white),
+                      title: new Text("Webcam", style: new TextStyle(color: Colors.white)),
+                      onTap: () => drawerTilePressed(ScreenType.Webcam),
+                    ),
+                    new ListTile(
+                      leading: new Icon(FontAwesomeIcons.youtube, color: Colors.white),
+                      title: new Text("Diretta", style: new TextStyle(color: Colors.white)),
+                      onTap: () => drawerTilePressed(ScreenType.Youtube),
+                    ),
+                    new ListTile(
+                      leading: new Icon(FontAwesomeIcons.globeAmericas, color: Colors.white),
+                      title: new Text("Sito Web", style: new TextStyle(color: Colors.white)),
+                      onTap: () => drawerTilePressed(ScreenType.SitoWeb),
+                    ),
+                    new ListTile(
+                      leading: new Icon(Icons.contact_mail, color: Colors.white),
+                      title: new Text("Contattaci", style: new TextStyle(color: Colors.white)),
+                      onTap: () => drawerTilePressed(ScreenType.Contattaci),
+                    ),
+                    new Divider(),
+                  ],
                 ),
-                new ListTile(
-                  leading: new Icon(Icons.radio, color: Colors.white),
-                  title: new Text("Radio", style: new TextStyle(color: Colors.white)),
-                  onTap: () => drawerTilePressed(ScreenType.Radio),
-                ),
-                new Divider(),
-                new ListTile(
-                  leading: new Icon(FontAwesomeIcons.database, color: Colors.white),
-                  title: new Text("Archivio", style: new TextStyle(color: Colors.white)),
-                  onTap: () => drawerTilePressed(ScreenType.Archivio),
-                ),
-                new ListTile(
-                  leading: new Icon(FontAwesomeIcons.images, color: Colors.white),
-                  title: new Text("Webcam", style: new TextStyle(color: Colors.white)),
-                  onTap: () => drawerTilePressed(ScreenType.Webcam),
-                ),
-                new ListTile(
-                  leading: new Icon(FontAwesomeIcons.globeAmericas, color: Colors.white),
-                  title: new Text("Sito Web", style: new TextStyle(color: Colors.white)),
-                  onTap: () => drawerTilePressed(ScreenType.SitoWeb),
-                ),
-                new ListTile(
-                  leading: new Icon(Icons.contact_mail, color: Colors.white),
-                  title: new Text("Contattaci", style: new TextStyle(color: Colors.white)),
-                  onTap: () => drawerTilePressed(ScreenType.Contattaci),
-                ),
-                new Divider()
+                new Align(child: new Text("App creata da 4loris4@gmail.com", style: new TextStyle(color: Colors.grey)), alignment: Alignment.bottomLeft)
               ],
             )
           ),
@@ -155,6 +166,9 @@ class AppState extends State<App> {
     Navigator.of(context).pop();
 
     switch (btnType) {
+      case ScreenType.Youtube:
+        openWebsite("https://www.youtube.com/channel/UCkJssIWpAzIgeZfDeLf3etw");
+        return;
       case ScreenType.SitoWeb:
         openWebsite("https://radioanaunia.it/");
         return;
@@ -188,7 +202,7 @@ class AppState extends State<App> {
     return new Scaffold(
       appBar: AppBar(
         title: appBarTitle,
-        backgroundColor: backgroundColor
+        backgroundColor: secondaryColror
       ),
       body: currentScreen,
       drawer: navigationDrawer(),
