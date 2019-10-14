@@ -1,7 +1,7 @@
 name: radioanaunia
 description: Radio Anaunia, radio locale che trasmette da Cles in provincia di Trento.
 
-version: 1.0.0+1
+version: 2.0.0+3
 
 environment:
     sdk: ">=2.2.0 <3.0.0"

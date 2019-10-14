@@ -121,7 +121,7 @@ class AppState extends State<App> {
                     new Divider(),
                   ],
                 ),
-                new Align(child: new Text("App creata da 4loris4@gmail.com", style: new TextStyle(color: Colors.grey)), alignment: Alignment.bottomLeft)
+                new Align(child: new Text("App creata da 4loris4@gmail.com", style: new TextStyle(color: Colors.grey, fontSize: 12)), alignment: Alignment.bottomLeft)
               ],
             )
           ),

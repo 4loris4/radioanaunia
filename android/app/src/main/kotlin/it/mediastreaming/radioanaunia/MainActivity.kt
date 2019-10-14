@@ -1,4 +1,4 @@
-package com.example.radioanaunia
+package it.mediastreaming.radioanaunia
 
 import android.os.Bundle
 
