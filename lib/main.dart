@@ -21,6 +21,7 @@ class _AppState extends State<App> {
       create: (_) => TabProvider(),
       child: MaterialApp(
         title: "Radio Anaunia",
+        theme: ThemeData(primarySwatch: Colors.grey),
         home: Consumer<TabProvider>(
           builder: (context, tab, _) {
             return Scaffold(
