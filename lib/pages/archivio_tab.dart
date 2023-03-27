@@ -20,17 +20,22 @@ class ArchivioDataSection {
 
 class ArchivioTab extends StatelessWidget {
   static final List<ArchivioDataSection> sections = [
+    ArchivioDataSection("Notizie ed appuntamenti", [
+      ArchivioDataPlayer(null, "https://radioanaunia.it/archivio/notizie_appuntamenti.mp3"),
+    ]),
     ArchivioDataSection("Doi ciacole dre al Nos", [
       ArchivioDataPlayer("Prima parte", "https://radioanaunia.it/archivio/doiciacole_1.mp3"),
       ArchivioDataPlayer("Seconda parte", "https://radioanaunia.it/archivio/doiciacole_2.mp3"),
+      ArchivioDataPlayer("Terza parte", "https://radioanaunia.it/archivio/doiciacole_3.mp3"),
+      ArchivioDataPlayer("Quarta parte", "https://radioanaunia.it/archivio/doiciacole_4.mp3"),
+      ArchivioDataPlayer("Quinta parte", "https://radioanaunia.it/archivio/doiciacole_5.mp3"),
     ]),
-    ArchivioDataSection("Tempo reale", [
-      ArchivioDataPlayer("Prima parte", "https://radioanaunia.it/archivio/TEMPOREALE01.mp3"),
-      ArchivioDataPlayer("Seconda parte", "https://radioanaunia.it/archivio/TEMPOREALE02.mp3"),
+    ArchivioDataSection("Tempo Reale", [
+      ArchivioDataPlayer(null, "https://radioanaunia.it/archivio/tempo_reale.mp3"),
     ]),
-    ArchivioDataSection("Notizie ed appuntamenti", [
-      ArchivioDataPlayer(null, "https://radioanaunia.it/archivio/notizie_appuntamenti.mp3"),
-    ])
+    ArchivioDataSection("Il caffè del venerdì", [
+      ArchivioDataPlayer(null, "https://radioanaunia.it/archivio/caffe_venerdi.mp3"),
+    ]),
   ];
 
   const ArchivioTab({Key? key}) : super(key: key);
@@ -39,7 +44,7 @@ class ArchivioTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: PadColumn(
-        spacing: 48,
+        spacing: 32,
         padding: EdgeInsets.all(16),
         children: sections
             .map(
@@ -52,7 +57,7 @@ class ArchivioTab extends StatelessWidget {
                       spacing: 8,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        if (audio.title != null) Text(audio.title!, style: TextStyle(color: Colors.white)),
+                        if (audio.title != null) Text(audio.title!, style: TextStyle(color: Colors.white, fontSize: 13)),
                         AudioPlayerTile(audio)
                       ],
                     );

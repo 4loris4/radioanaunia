@@ -19,7 +19,6 @@ class AudioPlayerTile extends StatefulWidget {
 class _AudioPlayerTileState extends State<AudioPlayerTile> {
   Duration? _duration;
   Duration? _playback;
-  late Future<Duration?> ready;
   Timer? playbackUpdate;
 
   AudioPlayer get audioPlayer => widget.audio.audioPlayer;
@@ -37,16 +36,34 @@ class _AudioPlayerTileState extends State<AudioPlayerTile> {
     }
 
     return Icon(
+      color: Colors.white,
       _duration!.isNegative
           ? Icons.error_outline
           : audioPlayer.playing
               ? Icons.pause
               : Icons.play_arrow,
-      color: Colors.white,
     );
   }
 
-  void setPlaybackUpdate([activate = true]) {
+  Slider _getSlider() {
+    final maxValue = _duration == null || _duration!.isNegative ? 1.0 : _duration!.inSeconds.toDouble();
+    return Slider(
+      min: 0,
+      max: maxValue,
+      value: min(max(0, _playback?.inSeconds.toDouble() ?? 0), maxValue),
+      onChanged: _duration == null || _duration!.isNegative
+          ? null
+          : (value) {
+              final valueDuration = Duration(seconds: value.toInt());
+              setState(() {
+                audioPlayer.seek(valueDuration);
+                _playback = valueDuration;
+              });
+            },
+    );
+  }
+
+  void _setPlaybackUpdate([activate = true]) {
     if (playbackUpdate != null) {
       playbackUpdate!.cancel();
       playbackUpdate = null;
@@ -59,7 +76,7 @@ class _AudioPlayerTileState extends State<AudioPlayerTile> {
         if (audioPlayer.playerState.processingState == ProcessingState.completed) {
           audioPlayer.pause();
           audioPlayer.seek(Duration.zero);
-          setPlaybackUpdate(false);
+          _setPlaybackUpdate(false);
           setState(() => _playback = Duration.zero);
         } else {
           setState(() => _playback = audioPlayer.position);
@@ -70,34 +87,36 @@ class _AudioPlayerTileState extends State<AudioPlayerTile> {
     }
   }
 
+  void _setUrl() async {
+    try {
+      final duration = await audioPlayer.setUrl(widget.audio.url);
+      if (mounted) {
+        setState(() {
+          _playback = Duration.zero;
+          _duration = duration;
+        });
+      }
+    } catch (_) {
+      if (mounted) {
+        setState(() => _duration = Duration(seconds: -1));
+      }
+    }
+  }
+
   @override
   void initState() {
     super.initState();
 
     if (audioPlayer.duration == null) {
-      ready = audioPlayer.setUrl(widget.audio.url);
-      ready.then((value) {
-        if (mounted) {
-          setState(() {
-            _playback = Duration.zero;
-            _duration = value;
-          });
-        }
-      });
-      ready.catchError((_) {
-        if (mounted) {
-          setState(() => _duration = Duration(seconds: -1));
-        }
-      });
+      _setUrl();
     } else {
-      ready = Future.delayed(Duration.zero);
       if (mounted) {
         setState(() {
           _playback = audioPlayer.position;
           _duration = audioPlayer.duration;
         });
       }
-      if (audioPlayer.playing) setPlaybackUpdate();
+      if (audioPlayer.playing) _setPlaybackUpdate();
     }
   }
 
@@ -120,18 +139,24 @@ class _AudioPlayerTileState extends State<AudioPlayerTile> {
             onPressed: _duration == null || _duration!.isNegative == true
                 ? null
                 : () {
-                    if (audioPlayer.playing) {
-                      audioPlayer.pause();
-                      setPlaybackUpdate(false);
-                    } else {
-                      audioPlayer.play();
-                      setPlaybackUpdate();
-                    }
-                    setState(() {});
+                    setState(() {
+                      if (audioPlayer.playing) {
+                        audioPlayer.pause();
+                        _setPlaybackUpdate(false);
+                      } else {
+                        audioPlayer.play();
+                        _setPlaybackUpdate();
+                      }
+                    });
                   },
             splashRadius: 18,
             padding: EdgeInsets.zero,
             icon: _getIcon(),
+            tooltip: _duration == null || _duration!.isNegative
+                ? null
+                : audioPlayer.playing
+                    ? "Pausa"
+                    : "Riproduci",
           ),
         ),
         Expanded(
@@ -146,29 +171,13 @@ class _AudioPlayerTileState extends State<AudioPlayerTile> {
               trackHeight: 2,
               thumbShape: RoundSliderThumbShape(enabledThumbRadius: 7),
             ),
-            child: () {
-              final maxValue = _duration == null || _duration!.isNegative ? 1.0 : _duration!.inSeconds.toDouble();
-              return Slider(
-                min: 0,
-                max: maxValue,
-                value: min(max(0, _playback?.inSeconds.toDouble() ?? 0), maxValue),
-                onChanged: _duration == null || _duration!.isNegative
-                    ? null
-                    : (value) {
-                        final valueDuration = Duration(seconds: value.toInt());
-                        setState(() {
-                          audioPlayer.seek(valueDuration);
-                          _playback = valueDuration;
-                        });
-                      },
-              );
-            }(),
+            child: _getSlider(),
           ),
         ),
         Text(() {
           if (_duration?.isNegative == true) return "Non disponibile";
           if (_duration == null || _playback == null) return "--:--/--:--";
-          return "${_playback!.toShortString()}/${_duration!.toShortString()}";
+          return "${_playback!.toShortString(_duration!.inHours > 0)}/${_duration!.toShortString(_duration!.inHours > 0)}";
         }(), style: TextStyle(color: Colors.white))
       ],
     );

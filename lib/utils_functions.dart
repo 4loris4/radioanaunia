@@ -40,8 +40,7 @@ extension AudioPlayerExtension on AudioPlayer {
 }
 
 extension DurationExtension on Duration {
-  String toShortString() {
-    String str = this.toString();
-    return str.substring(0, str.indexOf("."));
+  String toShortString([bool forceHours = false]) {
+    return "${(this.inHours > 0 || forceHours) ? "${this.inHours}:" : ""}${(this.inMinutes % 60).toString().padLeft(2, "0")}:${(this.inSeconds % 60).toString().padLeft(2, "0")}";
   }
 }

@@ -26,15 +26,13 @@ class _AppState extends State<App> {
           builder: (context, tab, _) {
             return Scaffold(
               appBar: AppBar(
-                leading: LayoutBuilder(
-                  builder: (context, _) {
-                    return IconButton(
-                      onPressed: () => Scaffold.of(context).openDrawer(),
-                      icon: Icon(Icons.menu),
-                      tooltip: "Apri il menu di navigazione",
-                      splashRadius: 24,
-                    );
-                  },
+                leading: Builder(
+                  builder: (context) => IconButton(
+                    onPressed: () => Scaffold.of(context).openDrawer(),
+                    icon: Icon(Icons.menu),
+                    tooltip: "Apri il menu di navigazione",
+                    splashRadius: 24,
+                  ),
                 ),
                 title: tab.value.action.title,
                 foregroundColor: Colors.white,
