@@ -5,6 +5,11 @@ import 'package:radioanaunia/components/home_drawer.dart';
 import 'package:radioanaunia/pages/app_tab_type.dart';
 import 'package:radioanaunia/providers/tab_provider.dart';
 
+//TODO safe space (slider volume)
+//TODO la musica si interrompe quando chiudi l'applicazione
+//TODO sezione webcam con scroll to reload, si sposta tutto?
+//TODO archivio, testo durata si continua a spostare
+
 void main() => runApp(const App());
 
 class App extends StatefulWidget {
