@@ -1,5 +1,6 @@
 {
     "dart.lineLength": -1,
+    "dart.showTodos": false,
     "cSpell.words": [
         "APPL",
         "audiotrack",
