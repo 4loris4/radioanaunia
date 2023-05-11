@@ -23,22 +23,26 @@ class WebcamTab extends StatefulWidget {
 class _WebcamTabState extends State<WebcamTab> {
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: () async => setState(() {}),
-      child: Center(
+    return LayoutBuilder(
+      builder: (context, constraints) => RefreshIndicator(
+        onRefresh: () async => setState(() {}),
         child: ListView(
-          shrinkWrap: true,
           children: [
-            PadColumn(
-              spacing: 20,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: webcams.map((webcam) {
-                return SizedBox(
-                  width: MediaQuery.of(context).size.width * .8,
-                  height: MediaQuery.of(context).size.width * .8 * 3 / 4,
-                  child: WebcamImage(webcam),
-                );
-              }).toList(),
+            Container(
+              padding: const EdgeInsets.all(20.0),
+              constraints: BoxConstraints(minHeight: constraints.maxHeight),
+              child: Center(
+                child: PadColumn(
+                  spacing: 20,
+                  children: webcams.map((webcam) {
+                    return SizedBox(
+                      width: MediaQuery.of(context).size.width * .8,
+                      height: MediaQuery.of(context).size.width * .8 * 3 / 4,
+                      child: WebcamImage(webcam),
+                    );
+                  }).toList(),
+                ),
+              ),
             )
           ],
         ),

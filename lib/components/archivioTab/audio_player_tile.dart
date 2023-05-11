@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_series/flutter_series.dart';
@@ -103,6 +104,12 @@ class _AudioPlayerTileState extends State<AudioPlayerTile> {
     }
   }
 
+  String _getDurationText() {
+    if (_duration?.isNegative == true) return "Non disponibile";
+    if (_duration == null || _playback == null) return "--:--/--:--";
+    return "${_playback!.toShortString(_duration!.inHours > 0)}/${_duration!.toShortString(_duration!.inHours > 0)}";
+  }
+
   @override
   void initState() {
     super.initState();
@@ -174,11 +181,15 @@ class _AudioPlayerTileState extends State<AudioPlayerTile> {
             child: _getSlider(),
           ),
         ),
-        Text(() {
-          if (_duration?.isNegative == true) return "Non disponibile";
-          if (_duration == null || _playback == null) return "--:--/--:--";
-          return "${_playback!.toShortString(_duration!.inHours > 0)}/${_duration!.toShortString(_duration!.inHours > 0)}";
-        }(), style: TextStyle(color: Colors.white))
+        Text(
+          _getDurationText(),
+          style: TextStyle(
+            color: Colors.white,
+            fontFeatures: [
+              FontFeature.tabularFigures()
+            ],
+          ),
+        )
       ],
     );
   }

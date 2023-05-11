@@ -1,16 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:radioanaunia/components/home_drawer.dart';
 import 'package:radioanaunia/pages/app_tab_type.dart';
 import 'package:radioanaunia/providers/tab_provider.dart';
 
-//TODO safe space (slider volume)
-//TODO la musica si interrompe quando chiudi l'applicazione
-//TODO sezione webcam con scroll to reload, si sposta tutto?
-//TODO archivio, testo durata si continua a spostare
+//TODO check fixed iOS
+//? sezione webcam con scroll to reload, si sposta tutto?
+//? landscape
+//? la musica si interrompe quando chiudi l'applicazione
+//? archivio, testo durata si continua a spostare
 
-void main() => runApp(const App());
+//TODO safe space (slider volume)
+
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown
+  ]);
+  runApp(const App());
+}
 
 class App extends StatefulWidget {
   const App({Key? key}) : super(key: key);
