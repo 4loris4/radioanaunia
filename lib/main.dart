@@ -6,14 +6,6 @@ import 'package:radioanaunia/components/home_drawer.dart';
 import 'package:radioanaunia/pages/app_tab_type.dart';
 import 'package:radioanaunia/providers/tab_provider.dart';
 
-//TODO check fixed iOS
-//? sezione webcam con scroll to reload, si sposta tutto?
-//? landscape
-//? la musica si interrompe quando chiudi l'applicazione
-//? archivio, testo durata si continua a spostare
-
-//TODO safe space (slider volume)
-
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
@@ -54,7 +46,7 @@ class _AppState extends State<App> {
                 foregroundColor: Colors.white,
                 backgroundColor: Colors.grey.shade900,
               ),
-              body: tab.value.action.widget,
+              body: SafeArea(child: tab.value.action.widget ?? Center()),
               backgroundColor: Colors.black,
               drawer: const HomeDrawer(),
             );

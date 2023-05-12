@@ -49,7 +49,6 @@ flutter_launcher_icons:
   adaptive_icon_foreground: assets/icon/adaptive_foreground.png
   adaptive_icon_background: "#FFFFFF"
 
-# TODO splash screen
 # dart run flutter_native_splash:create
 flutter_native_splash:
   color: "#ffffff"
