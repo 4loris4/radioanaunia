@@ -18,26 +18,26 @@ class ArchivioDataSection {
   const ArchivioDataSection(this.title, this.audioPlayers);
 }
 
-class ArchivioTab extends StatelessWidget {
-  static final List<ArchivioDataSection> sections = [
-    ArchivioDataSection("Notizie ed appuntamenti", [
-      ArchivioDataPlayer(null, "https://radioanaunia.it/archivio/notizie_appuntamenti.mp3"),
-    ]),
-    ArchivioDataSection("Doi ciacole dre al Nos", [
-      ArchivioDataPlayer("Prima parte", "https://radioanaunia.it/archivio/doiciacole_1.mp3"),
-      ArchivioDataPlayer("Seconda parte", "https://radioanaunia.it/archivio/doiciacole_2.mp3"),
-      ArchivioDataPlayer("Terza parte", "https://radioanaunia.it/archivio/doiciacole_3.mp3"),
-      ArchivioDataPlayer("Quarta parte", "https://radioanaunia.it/archivio/doiciacole_4.mp3"),
-      ArchivioDataPlayer("Quinta parte", "https://radioanaunia.it/archivio/doiciacole_5.mp3"),
-    ]),
-    ArchivioDataSection("Tempo Reale", [
-      ArchivioDataPlayer(null, "https://radioanaunia.it/archivio/tempo_reale.mp3"),
-    ]),
-    ArchivioDataSection("Il caffè del venerdì", [
-      ArchivioDataPlayer(null, "https://radioanaunia.it/archivio/caffe_venerdi.mp3"),
-    ]),
-  ];
+final List<ArchivioDataSection> sections = [
+  ArchivioDataSection("Notizie ed appuntamenti", [
+    ArchivioDataPlayer(null, "https://radioanaunia.it/archivio/notizie_appuntamenti.mp3"),
+  ]),
+  ArchivioDataSection("Doi ciacole dre al Nos", [
+    ArchivioDataPlayer("Prima parte", "https://radioanaunia.it/archivio/doiciacole_1.mp3"),
+    ArchivioDataPlayer("Seconda parte", "https://radioanaunia.it/archivio/doiciacole_2.mp3"),
+    ArchivioDataPlayer("Terza parte", "https://radioanaunia.it/archivio/doiciacole_3.mp3"),
+    ArchivioDataPlayer("Quarta parte", "https://radioanaunia.it/archivio/doiciacole_4.mp3"),
+    ArchivioDataPlayer("Quinta parte", "https://radioanaunia.it/archivio/doiciacole_5.mp3"),
+  ]),
+  ArchivioDataSection("Tempo Reale", [
+    ArchivioDataPlayer(null, "https://radioanaunia.it/archivio/tempo_reale.mp3"),
+  ]),
+  ArchivioDataSection("Il caffè del venerdì", [
+    ArchivioDataPlayer(null, "https://radioanaunia.it/archivio/caffe_venerdi.mp3"),
+  ]),
+];
 
+class ArchivioTab extends StatelessWidget {
   const ArchivioTab({Key? key}) : super(key: key);
 
   @override

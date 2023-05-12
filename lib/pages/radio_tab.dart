@@ -107,6 +107,8 @@ class _RadioTabState extends State<RadioTab> {
     _updateTimer?.cancel();
   }
 
+  //TODO rewrite using streams
+
   @override
   Widget build(BuildContext context) {
     return Column(

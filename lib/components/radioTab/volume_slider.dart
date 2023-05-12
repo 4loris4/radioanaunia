@@ -27,6 +27,9 @@ class _VolumeSliderState extends State<VolumeSlider> {
     volumeController.removeListener();
   }
 
+  //TODO glow radius
+  //TODO rewrite? smoother ranges when changing volume (hide system ui?)
+
   @override
   Widget build(BuildContext context) {
     return PadRow(
