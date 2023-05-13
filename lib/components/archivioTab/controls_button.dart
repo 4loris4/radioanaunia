@@ -11,14 +11,16 @@ class ControlsButton extends StatelessWidget {
     super.key,
   });
 
+  final double _size = 24;
+
   @override
   Widget build(BuildContext context) {
     final state = playerState?.processingState;
     final playing = playerState?.playing ?? false;
 
     return SizedBox(
-      width: 24,
-      height: 24,
+      width: _size,
+      height: _size,
       child: () {
         if (state == ProcessingState.idle) {
           return Icon(Icons.error_outline, color: Colors.white);
@@ -32,8 +34,8 @@ class ControlsButton extends StatelessWidget {
         }
 
         return IconButton(
-          iconSize: 24,
-          splashRadius: 18,
+          iconSize: _size,
+          splashRadius: _size * .75,
           padding: EdgeInsets.zero,
           color: Colors.white,
           icon: Icon(

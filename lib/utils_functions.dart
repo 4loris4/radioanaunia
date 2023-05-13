@@ -1,4 +1,3 @@
-import 'package:just_audio/just_audio.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 void openUrl(String url) async {
@@ -28,15 +27,6 @@ String titleCase(String str) {
 extension StringExtension on String {
   String toCapitalized() => this.isEmpty ? "" : "${this[0].toUpperCase()}${this.substring(1).toLowerCase()}";
   String toCapitalizedWords() => this.split(" ").map((str) => str.toCapitalized()).join(" ");
-}
-
-extension AudioPlayerExtension on AudioPlayer {
-  Future<void> playURL(String url) async {
-    try {
-      await this.setUrl(url);
-      this.play();
-    } catch (_) {}
-  }
 }
 
 extension DurationExtension on Duration {

@@ -46,7 +46,7 @@ class _AppState extends State<App> {
                 foregroundColor: Colors.white,
                 backgroundColor: Colors.grey.shade900,
               ),
-              body: SafeArea(child: tab.value.action.widget ?? Center()),
+              body: SafeArea(child: tab.value.action.widget ?? Placeholder()),
               backgroundColor: Colors.black,
               drawer: const HomeDrawer(),
             );
