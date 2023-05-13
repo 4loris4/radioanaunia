@@ -11,8 +11,6 @@ import 'package:radioanaunia/components/radioTab/volume_slider.dart';
 
 const radioURL = "https://s6.mediastreaming.it/m/9134?ext=.mp3";
 
-//TODO background audio package?
-
 class RadioTab extends StatefulWidget {
   const RadioTab({Key? key}) : super(key: key);
 

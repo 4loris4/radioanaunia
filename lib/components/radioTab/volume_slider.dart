@@ -51,7 +51,7 @@ class _VolumeSliderState extends State<VolumeSlider> {
                 ),
                 child: Slider(
                   value: volume,
-                  divisions: 15,
+                  divisions: 31,
                   onChanged: _volumeController.setVolume,
                 ),
               ),
