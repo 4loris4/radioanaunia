@@ -48,7 +48,7 @@ class ProgressBar extends StatelessWidget {
               bufferedBarColor: hasError ? Colors.transparent : Colors.white.withAlpha(64),
               progressBarColor: hasError ? Colors.transparent : Colors.white,
               thumbColor: hasError ? Colors.transparent : Colors.white,
-              thumbRadius: 8,
+              thumbRadius: 9,
               thumbGlowRadius: 18,
               timeLabelLocation: TimeLabelLocation.none,
               progress: playerData?.position ?? Duration.zero,

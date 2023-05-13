@@ -11,7 +11,7 @@ class ControlsButton extends StatelessWidget {
     super.key,
   });
 
-  final double _size = 24;
+  final double _size = 28;
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +28,8 @@ class ControlsButton extends StatelessWidget {
 
         if (state == null || state == ProcessingState.buffering || state == ProcessingState.loading) {
           return Padding(
-            padding: const EdgeInsets.all(3),
-            child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
+            padding: const EdgeInsets.all(5),
+            child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2.5),
           );
         }
 
