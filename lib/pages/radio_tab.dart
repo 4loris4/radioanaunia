@@ -45,6 +45,7 @@ class _RadioTabState extends State<RadioTab> {
               final playerState = snapshot.data;
               final playing = playerState?.playing ?? false;
               return Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Expanded(
                     flex: 1,
