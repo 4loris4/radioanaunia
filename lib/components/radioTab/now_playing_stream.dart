@@ -59,7 +59,7 @@ class NowPlayingStream {
     final playingText = await _fetchPlaying();
     if (playingText == null) return;
 
-    final splitText = playingText.split("-").map((str) => str.trim().toCapitalizedWords()).where((str) => str.length > 1).toList();
+    final splitText = playingText.split("-").map((str) => str.trim().toCapitalizedWords()).where((str) => str.length > 2).toList();
     final title = splitText.length > 1 ? splitText[1] : playingText.toCapitalizedWords();
     final coverUrl = await _fetchCoverImage(playingText.toCapitalizedWords());
     final coverColor = coverUrl == null ? null : (await PaletteGenerator.fromImageProvider(NetworkImage(coverUrl))).dominantColor?.color;
