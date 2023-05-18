@@ -8,10 +8,16 @@ import 'package:radioanaunia/providers/tab_provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown
   ]);
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(systemNavigationBarColor: Colors.transparent),
+  );
+
   runApp(const App());
 }
 
@@ -46,7 +52,7 @@ class _AppState extends State<App> {
                 foregroundColor: Colors.white,
                 backgroundColor: Colors.grey.shade900,
               ),
-              body: SafeArea(child: tab.value.action.widget ?? Placeholder()),
+              body: tab.value.action.widget,
               backgroundColor: Colors.black,
               drawer: const HomeDrawer(),
             );

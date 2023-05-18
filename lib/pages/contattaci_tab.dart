@@ -12,7 +12,7 @@ class ContattaciTab extends StatelessWidget {
       children: [
         PadColumn(
           padding: EdgeInsets.all(16),
-          spacing: 10,
+          spacing: 8,
           children: [
             RichText(
               text: TextSpan(
@@ -38,6 +38,42 @@ class ContattaciTab extends StatelessWidget {
               ),
             ),
           ],
+        ),
+        ListTile(
+          leading: SizedBox(height: double.infinity, child: Icon(Icons.call, color: Colors.white)),
+          title: Text("Info", style: TextStyle(color: Colors.white, fontSize: 15)),
+          subtitle: Text("+39 0463422155", style: TextStyle(color: Colors.white.withOpacity(.6), fontSize: 12)),
+          onTap: () => openUrl("tel:+390463422155"),
+        ),
+        ListTile(
+          leading: SizedBox(height: double.infinity, child: Icon(Icons.call, color: Colors.white)),
+          title: Text("Info", style: TextStyle(color: Colors.white, fontSize: 15)),
+          subtitle: Text("+39 0463422155", style: TextStyle(color: Colors.white.withOpacity(.6), fontSize: 12)),
+          onTap: () => openUrl("tel:+390463422155"),
+        ),
+        ListTile(
+          leading: SizedBox(height: double.infinity, child: Icon(Icons.call, color: Colors.white)),
+          title: Text("Info", style: TextStyle(color: Colors.white, fontSize: 15)),
+          subtitle: Text("+39 0463422155", style: TextStyle(color: Colors.white.withOpacity(.6), fontSize: 12)),
+          onTap: () => openUrl("tel:+390463422155"),
+        ),
+        ListTile(
+          leading: SizedBox(height: double.infinity, child: Icon(Icons.call, color: Colors.white)),
+          title: Text("Info", style: TextStyle(color: Colors.white, fontSize: 15)),
+          subtitle: Text("+39 0463422155", style: TextStyle(color: Colors.white.withOpacity(.6), fontSize: 12)),
+          onTap: () => openUrl("tel:+390463422155"),
+        ),
+        ListTile(
+          leading: SizedBox(height: double.infinity, child: Icon(Icons.call, color: Colors.white)),
+          title: Text("Info", style: TextStyle(color: Colors.white, fontSize: 15)),
+          subtitle: Text("+39 0463422155", style: TextStyle(color: Colors.white.withOpacity(.6), fontSize: 12)),
+          onTap: () => openUrl("tel:+390463422155"),
+        ),
+        ListTile(
+          leading: SizedBox(height: double.infinity, child: Icon(Icons.call, color: Colors.white)),
+          title: Text("Info", style: TextStyle(color: Colors.white, fontSize: 15)),
+          subtitle: Text("+39 0463422155", style: TextStyle(color: Colors.white.withOpacity(.6), fontSize: 12)),
+          onTap: () => openUrl("tel:+390463422155"),
         ),
         ListTile(
           leading: SizedBox(height: double.infinity, child: Icon(Icons.call, color: Colors.white)),

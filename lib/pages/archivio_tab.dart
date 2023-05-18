@@ -45,7 +45,7 @@ class ArchivioTab extends StatelessWidget {
     return SingleChildScrollView(
       child: PadColumn(
         spacing: 32,
-        padding: EdgeInsets.all(16),
+        padding: EdgeInsets.all(16) + EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
         children: sections
             .map(
               (section) => PadColumn(
