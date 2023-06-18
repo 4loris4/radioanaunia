@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:radioanaunia/main.dart';
 
 class ControlsButton extends StatelessWidget {
   final AudioPlayer audioPlayer;
@@ -23,21 +24,17 @@ class ControlsButton extends StatelessWidget {
       height: _size,
       child: () {
         if (state == ProcessingState.idle) {
-          return Icon(Icons.error_outline, color: Colors.white);
+          return const Icon(Icons.error_outline);
         }
 
         if (state == null || state == ProcessingState.buffering || state == ProcessingState.loading) {
-          return Padding(
-            padding: const EdgeInsets.all(5),
-            child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2.5),
-          );
+          return const Padding(padding: EdgeInsets.all(5), child: CircularProgressIndicator(strokeWidth: 2.5));
         }
 
         return IconButton(
           iconSize: _size,
           splashRadius: _size * .75,
           padding: EdgeInsets.zero,
-          color: Colors.white,
           icon: Icon(
             state == ProcessingState.completed
                 ? Icons.replay
@@ -46,10 +43,10 @@ class ControlsButton extends StatelessWidget {
                     : Icons.play_arrow,
           ),
           tooltip: state == ProcessingState.completed
-              ? "Riascolta"
+              ? lang(context).replay
               : playing
-                  ? "Pausa"
-                  : "Riproduci",
+                  ? lang(context).pause
+                  : lang(context).play,
           onPressed: state == ProcessingState.completed
               ? () => audioPlayer.seek(Duration.zero)
               : playing

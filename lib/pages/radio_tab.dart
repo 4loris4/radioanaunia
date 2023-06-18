@@ -12,7 +12,7 @@ import 'package:radioanaunia/components/radioTab/volume_slider.dart';
 const radioURL = "https://s6.mediastreaming.it/m/9134?ext=.mp3";
 
 class RadioTab extends StatefulWidget {
-  const RadioTab({Key? key}) : super(key: key);
+  const RadioTab({super.key});
 
   @override
   State<RadioTab> createState() => _RadioTabState();
@@ -41,78 +41,79 @@ class _RadioTabState extends State<RadioTab> {
         builder: (context, snapshot) {
           final audioDetails = snapshot.data;
           return StreamBuilder<PlayerState>(
-              stream: _audioPlayer.playerStateStream,
-              builder: (context, snapshot) {
-                final playerState = snapshot.data;
-                final playing = playerState?.playing ?? false;
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 500),
-                        color: audioDetails?.color ?? Colors.grey.shade400,
-                        child: Center(
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(15),
-                            clipBehavior: Clip.antiAliasWithSaveLayer,
-                            child: AnimatedContainer(
-                              duration: playing ? const Duration(milliseconds: 1500) : const Duration(milliseconds: 750),
-                              curve: playing ? Curves.elasticOut : Curves.ease,
-                              width: _getCoverSize(context, playing),
-                              height: _getCoverSize(context, playing),
-                              color: Colors.white,
-                              child: ImageFade(
-                                duration: const Duration(milliseconds: 500),
-                                fit: BoxFit.cover,
-                                image: audioDetails?.cover != null ? NetworkImage(audioDetails!.cover!) : null,
-                                placeholder: Image.asset("assets/coverDefault.png", fit: BoxFit.cover),
-                              ),
+            stream: _audioPlayer.playerStateStream,
+            builder: (context, snapshot) {
+              final playerState = snapshot.data;
+              final playing = playerState?.playing ?? false;
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 500),
+                      color: audioDetails?.color ?? Colors.grey.shade400,
+                      child: Center(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(15),
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          child: AnimatedContainer(
+                            duration: playing ? const Duration(milliseconds: 1500) : const Duration(milliseconds: 750),
+                            curve: playing ? Curves.elasticOut : Curves.ease,
+                            width: _getCoverSize(context, playing),
+                            height: _getCoverSize(context, playing),
+                            child: ImageFade(
+                              duration: const Duration(milliseconds: 500),
+                              fit: BoxFit.cover,
+                              image: audioDetails?.cover != null ? NetworkImage(audioDetails!.cover!) : null,
+                              placeholder: Image.asset("assets/coverDefault.png", fit: BoxFit.cover),
                             ),
                           ),
                         ),
                       ),
                     ),
-                    AnimatedSize(
-                      duration: const Duration(milliseconds: 500),
-                      alignment: Alignment.bottomCenter,
-                      child: Column(
-                        children: [
-                          if (audioDetails == null) const LinearProgressIndicator(color: Colors.white, backgroundColor: Colors.black),
-                          PadColumn(
-                            padding: EdgeInsets.all(16),
-                            children: [
-                              if (audioDetails != null)
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
+                  ),
+                  AnimatedSize(
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeInOut,
+                    alignment: Alignment.bottomCenter,
+                    child: Column(
+                      children: [
+                        if (audioDetails == null) const LinearProgressIndicator(backgroundColor: Colors.transparent),
+                        PadColumn(
+                          padding: const EdgeInsets.all(16),
+                          children: [
+                            if (audioDetails != null)
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ScrollText(
+                                    audioDetails.title,
+                                    fontSize: 24,
+                                    style: const TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  if (audioDetails.author != null)
                                     ScrollText(
-                                      audioDetails.title,
-                                      fontSize: 24,
-                                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                                    ),
-                                    if (audioDetails.author != null)
-                                      ScrollText(
-                                        audioDetails.author!,
-                                        fontSize: 16,
-                                        style: TextStyle(color: Colors.white.withOpacity(.6)),
-                                      )
-                                  ],
-                                ),
-                              Padding(
-                                padding: const EdgeInsets.all(16),
-                                child: Center(child: LiveControlsButton(audioPlayer: _audioPlayer, playerState: playerState)),
+                                      audioDetails.author!,
+                                      fontSize: 16,
+                                      style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(.6)),
+                                    )
+                                ],
                               ),
-                              VolumeSlider(),
-                            ],
-                          ),
-                        ],
-                      ),
+                            Padding(
+                              padding: const EdgeInsets.all(16),
+                              child: Center(child: LiveControlsButton(audioPlayer: _audioPlayer, playerState: playerState)),
+                            ),
+                            const VolumeSlider(),
+                          ],
+                        ),
+                      ],
                     ),
-                  ],
-                );
-              });
+                  ),
+                ],
+              );
+            },
+          );
         },
       ),
     );

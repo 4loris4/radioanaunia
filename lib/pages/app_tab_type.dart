@@ -1,36 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:radioanaunia/pages/contattaci_tab.dart';
+import 'package:radioanaunia/main.dart';
+import 'package:radioanaunia/pages/contact_us_tab.dart';
 import 'package:radioanaunia/pages/radio_tab.dart';
 import 'package:radioanaunia/pages/webcam_tab.dart';
 import 'package:radioanaunia/utils_functions.dart';
 
-import 'archivio_tab.dart';
+import 'archive_tab.dart';
 
 enum AppTab {
   radio,
-  archivio,
+  archive,
   webcam,
-  diretta,
+  live,
   website,
-  contattaci,
+  contactUs,
 }
 
-extension AppTabProps on AppTab {
-  String get displayName {
+class TabAction {
+  final Widget? widget;
+  final Widget? title;
+  final void Function()? onTap;
+  final bool isWidget;
+
+  TabAction.widget({required Widget this.widget, required Widget this.title})
+      : onTap = null,
+        isWidget = true;
+
+  TabAction.onTap(void Function() this.onTap)
+      : widget = null,
+        title = null,
+        isWidget = false;
+}
+
+extension AppTabData on AppTab {
+  String displayName(BuildContext context) {
     switch (this) {
       case AppTab.radio:
-        return "Radio";
-      case AppTab.archivio:
-        return "Archivio";
+        return lang(context).tabRadio;
+      case AppTab.archive:
+        return lang(context).tabArchive;
       case AppTab.webcam:
-        return "Webcam";
-      case AppTab.diretta:
-        return "Diretta";
+        return lang(context).tabWebcam;
+      case AppTab.live:
+        return lang(context).tabLive;
       case AppTab.website:
-        return "Sito Web";
-      case AppTab.contattaci:
-        return "Contattaci";
+        return lang(context).tabWebsite;
+      case AppTab.contactUs:
+        return lang(context).tabContactUs;
     }
   }
 
@@ -38,61 +55,45 @@ extension AppTabProps on AppTab {
     switch (this) {
       case AppTab.radio:
         return Icons.audiotrack;
-      case AppTab.archivio:
+      case AppTab.archive:
         return Icons.storage;
       case AppTab.webcam:
         return Icons.camera;
-      case AppTab.diretta:
+      case AppTab.live:
         return FontAwesomeIcons.youtube;
       case AppTab.website:
         return Icons.link;
-      case AppTab.contattaci:
+      case AppTab.contactUs:
         return Icons.contact_mail;
     }
   }
 
-  _TabAction get action {
+  TabAction action(BuildContext context) {
     switch (this) {
       case AppTab.radio:
-        return _TabAction.widget(
+        return TabAction.widget(
           widget: const RadioTab(),
           title: Image.asset("assets/logoTitle.png", height: 45),
         );
-      case AppTab.archivio:
-        return _TabAction.widget(
-          widget: const ArchivioTab(),
-          title: Text(this.displayName),
+      case AppTab.archive:
+        return TabAction.widget(
+          widget: const ArchiveTab(),
+          title: Text(displayName(context)),
         );
       case AppTab.webcam:
-        return _TabAction.widget(
+        return TabAction.widget(
           widget: const WebcamTab(),
-          title: Text(this.displayName),
+          title: Text(displayName(context)),
         );
-      case AppTab.diretta:
-        return _TabAction.onTap(() => openUrl("https://www.youtube.com/channel/UCkJssIWpAzIgeZfDeLf3etw"));
+      case AppTab.live:
+        return TabAction.onTap(() => openUrl("https://www.youtube.com/channel/UCkJssIWpAzIgeZfDeLf3etw"));
       case AppTab.website:
-        return _TabAction.onTap(() => openUrl("https://radioanaunia.it"));
-      case AppTab.contattaci:
-        return _TabAction.widget(
-          widget: const ContattaciTab(),
-          title: Text(this.displayName),
+        return TabAction.onTap(() => openUrl("https://radioanaunia.it"));
+      case AppTab.contactUs:
+        return TabAction.widget(
+          widget: const ContactUsTab(),
+          title: Text(displayName(context)),
         );
     }
   }
-}
-
-class _TabAction {
-  final Widget? widget;
-  final Widget? title;
-  final void Function()? onTap;
-  final bool isWidget;
-
-  _TabAction.widget({required Widget this.widget, required Widget this.title})
-      : onTap = null,
-        isWidget = true;
-
-  _TabAction.onTap(void Function() this.onTap)
-      : widget = null,
-        title = null,
-        isWidget = false;
 }

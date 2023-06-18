@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:radioanaunia/main.dart';
 import 'package:radioanaunia/pages/radio_tab.dart';
 
 class LiveControlsButton extends StatelessWidget {
@@ -24,19 +25,15 @@ class LiveControlsButton extends StatelessWidget {
       height: _size,
       child: () {
         if (state == null || state == ProcessingState.buffering || state == ProcessingState.loading) {
-          return Padding(
-            padding: const EdgeInsets.all(12),
-            child: CircularProgressIndicator(color: Colors.white),
-          );
+          return const Padding(padding: EdgeInsets.all(12), child: CircularProgressIndicator());
         }
 
         return IconButton(
           iconSize: _size,
           splashRadius: _size * .75,
           padding: EdgeInsets.zero,
-          color: Colors.white,
           icon: Icon(playing ? Icons.stop : Icons.play_arrow),
-          tooltip: playing ? "Interrompi" : "Riproduci",
+          tooltip: playing ? lang(context).stop : lang(context).play,
           onPressed: playing
               ? audioPlayer.stop
               : () async {

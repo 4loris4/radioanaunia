@@ -11,12 +11,12 @@ class ScrollText extends StatelessWidget {
     this.text, {
     required this.fontSize,
     required this.style,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: fontSize + 4,
       child: AutoSizeText(
         text,

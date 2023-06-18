@@ -23,16 +23,14 @@ class NowPlayingStream {
 
   NowPlayingStream() {
     _fetchData();
-    _updateTimer = Timer.periodic(Duration(seconds: 15), (_) => _fetchData());
+    _updateTimer = Timer.periodic(const Duration(seconds: 15), (_) => _fetchData());
   }
 
   Future<String?> _fetchCoverImage(String query) async {
     try {
       final response = await http.get(
         Uri.parse("https://itunes.apple.com/search?media=music&country=us&term=${Uri.encodeComponent(query)}"),
-        headers: {
-          "Accept": "application/json"
-        },
+        headers: {"Accept": "application/json"},
       );
       return jsonDecode(response.body)["results"][0]["artworkUrl100"];
     } catch (_) {
@@ -44,9 +42,7 @@ class NowPlayingStream {
     try {
       final response = await http.get(
         Uri.parse("https://s6.mediastreaming.it/9134/html5/onairtxt.php"),
-        headers: {
-          "Accept": "application/json"
-        },
+        headers: {"Accept": "application/json"},
       );
 
       final responseText = response.body.substring(response.body.indexOf("=") + 1).trim();

@@ -5,7 +5,7 @@ import 'package:flutter_series/flutter_series.dart';
 import 'package:volume_controller/volume_controller.dart';
 
 class VolumeSlider extends StatefulWidget {
-  const VolumeSlider({Key? key}) : super(key: key);
+  const VolumeSlider({super.key});
 
   @override
   State<VolumeSlider> createState() => _VolumeSliderState();
@@ -38,14 +38,11 @@ class _VolumeSliderState extends State<VolumeSlider> {
           crossAxisAlignment: CrossAxisAlignment.center,
           spacing: 8,
           children: [
-            Icon(Icons.volume_down, color: Colors.white),
+            const Icon(Icons.volume_down),
             Expanded(
               child: SliderTheme(
-                data: SliderThemeData(
+                data: const SliderThemeData(
                   trackHeight: 4,
-                  thumbColor: Colors.white,
-                  activeTrackColor: Colors.white,
-                  inactiveTrackColor: Colors.white.withAlpha(32),
                   activeTickMarkColor: Colors.transparent,
                   inactiveTickMarkColor: Colors.transparent,
                 ),
@@ -56,7 +53,7 @@ class _VolumeSliderState extends State<VolumeSlider> {
                 ),
               ),
             ),
-            Icon(Icons.volume_up, color: Colors.white),
+            const Icon(Icons.volume_up),
           ],
         );
       },

@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_series/flutter_series.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:radioanaunia/components/archivioTab/controls_button.dart';
-import 'package:radioanaunia/components/archivioTab/progress_bar.dart';
-import 'package:radioanaunia/pages/archivio_tab.dart';
+import 'package:radioanaunia/components/archiveTab/controls_button.dart';
+import 'package:radioanaunia/components/archiveTab/progress_bar.dart';
+import 'package:radioanaunia/pages/archive_tab.dart';
 import 'package:rxdart/rxdart.dart';
 
 class PlayerData {
@@ -17,9 +17,9 @@ class PlayerData {
 }
 
 class AudioPlayerTile extends StatelessWidget {
-  final ArchivioDataPlayer audio;
+  final ArchiveDataPlayer audio;
 
-  AudioPlayerTile(this.audio, {Key? key}) : super(key: key) {
+  AudioPlayerTile(this.audio, {super.key}) {
     if (audioPlayer.playerState.processingState == ProcessingState.idle) {
       audioPlayer.setUrl(audio.url).ignore();
     }

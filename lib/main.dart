@@ -1,66 +1,64 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
-import 'package:radioanaunia/components/home_drawer.dart';
 import 'package:radioanaunia/pages/app_tab_type.dart';
-import 'package:radioanaunia/providers/tab_provider.dart';
+import 'package:radioanaunia/pages/home_drawer.dart';
+import 'package:radioanaunia/themes.dart';
+
+typedef TabProvider = ValueNotifier<AppTab>;
+
+AppLocalizations lang(BuildContext context) => AppLocalizations.of(context)!;
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown
-  ]);
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-  SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(systemNavigationBarColor: Colors.transparent),
-  );
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(systemNavigationBarColor: Colors.transparent));
 
-  runApp(const App());
+  runApp(const _App());
 }
 
-class App extends StatefulWidget {
-  const App({Key? key}) : super(key: key);
+class _App extends StatelessWidget {
+  const _App();
 
-  @override
-  State<App> createState() => _AppState();
-}
-
-class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => TabProvider(),
+      create: (_) => TabProvider(AppTab.radio),
       child: MaterialApp(
         title: "Radio Anaunia",
-        theme: ThemeData(primarySwatch: Colors.grey),
-        home: Consumer<TabProvider>(
-          builder: (context, tab, _) {
-            return Scaffold(
-              appBar: AppBar(
-                leading: Builder(
-                  builder: (context) => IconButton(
-                    onPressed: () => Scaffold.of(context).openDrawer(),
-                    icon: Icon(Icons.menu),
-                    tooltip: "Apri il menu di navigazione",
-                    splashRadius: 24,
-                  ),
+        theme: lightTheme,
+        darkTheme: darkTheme,
+        home: Consumer<TabProvider>(builder: (context, tabProvider, _) {
+          final tab = tabProvider.value.action(context);
+          return Scaffold(
+            appBar: AppBar(
+              leading: Builder(
+                builder: (context) => IconButton(
+                  onPressed: Scaffold.of(context).openDrawer,
+                  icon: const DrawerButtonIcon(),
+                  tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+                  splashRadius: 24,
                 ),
-                title: tab.value.action.title,
-                foregroundColor: Colors.white,
-                backgroundColor: Colors.grey.shade900,
               ),
-              body: tab.value.action.widget,
-              backgroundColor: Colors.black,
-              drawer: const HomeDrawer(),
-            );
-          },
-        ),
-        localizationsDelegates: GlobalMaterialLocalizations.delegates,
+              title: tab.title,
+            ),
+            body: tab.widget,
+            drawer: const HomeDrawer(),
+          );
+        }),
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
         supportedLocales: const [
-          Locale("it")
+          Locale("it"),
+          Locale("en"),
         ],
       ),
     );
