@@ -19,12 +19,13 @@ class RadioTab extends StatefulWidget {
 }
 
 class _RadioTabState extends State<RadioTab> {
-  static final _audioPlayer = AudioPlayer();
+  final _audioPlayer = AudioPlayer();
   final _nowPlaying = NowPlayingStream();
 
   @override
   void dispose() {
     super.dispose();
+    _audioPlayer.dispose();
     _nowPlaying.dispose();
   }
 

@@ -3,8 +3,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:radioanaunia/main.dart';
-import 'package:radioanaunia/pages/app_tab_type.dart';
+import 'package:radioanaunia/tabs.dart';
 import 'package:radioanaunia/themes.dart';
+import 'package:radioanaunia/utils_functions.dart';
 
 class HomeDrawer extends StatelessWidget {
   const HomeDrawer({super.key});
@@ -21,35 +22,35 @@ class HomeDrawer extends StatelessWidget {
             child: SafeArea(
               child: Column(
                 children: [
+                  const Padding(padding: EdgeInsets.all(16), child: Image(image: AssetImage("assets/logo.png"))),
                   Expanded(
                     child: ListView(
-                      children: [
-                        const Padding(padding: EdgeInsets.all(16), child: Image(image: AssetImage("assets/logo.png"))),
-                        ...AppTab.values.map((tab) {
-                          final action = tab.action(context);
-                          return ListTile(
-                            title: Text(tab.displayName(context)),
-                            leading: Icon(tab.icon),
-                            onTap: () {
-                              if (action.isWidget) {
-                                Provider.of<TabProvider>(context, listen: false).value = tab;
-                                Navigator.of(context).pop();
-                              } else {
-                                action.onTap!();
-                              }
-                            },
-                          );
-                        })
-                      ],
+                      children: tabs.map((tab) {
+                        return ListTile(
+                          title: Text(tab.title(context)),
+                          leading: Icon(tab.icon),
+                          onTap: () {
+                            if (tab is TabActionWidget) {
+                              Provider.of<TabProvider>(context, listen: false).value = tab.index;
+                              Navigator.of(context).pop();
+                            } else if (tab is TabActionLink) {
+                              openUrl(tab.url);
+                            }
+                          },
+                        );
+                      }).toList(),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8),
-                    child: Opacity(
-                      opacity: .5,
-                      child: Center(child: Text(lang(context).credits, style: const TextStyle(fontSize: 10))),
+                    child: Center(
+                      child: Text(
+                        lang(context).credits,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 10, color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(.5)),
+                      ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),

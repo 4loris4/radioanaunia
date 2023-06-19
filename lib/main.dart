@@ -3,11 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
-import 'package:radioanaunia/pages/app_tab_type.dart';
 import 'package:radioanaunia/pages/home_drawer.dart';
+import 'package:radioanaunia/tabs.dart';
 import 'package:radioanaunia/themes.dart';
 
-typedef TabProvider = ValueNotifier<AppTab>;
+typedef TabProvider = ValueNotifier<int>;
 
 AppLocalizations lang(BuildContext context) => AppLocalizations.of(context)!;
 
@@ -27,13 +27,13 @@ class _App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => TabProvider(AppTab.radio),
+      create: (_) => TabProvider(0),
       child: MaterialApp(
         title: "Radio Anaunia",
         theme: lightTheme,
         darkTheme: darkTheme,
         home: Consumer<TabProvider>(builder: (context, tabProvider, _) {
-          final tab = tabProvider.value.action(context);
+          final tab = widgetTabs[tabProvider.value];
           return Scaffold(
             appBar: AppBar(
               leading: Builder(
@@ -44,9 +44,12 @@ class _App extends StatelessWidget {
                   splashRadius: 24,
                 ),
               ),
-              title: tab.title,
+              title: tab.appBarTitle(context),
             ),
-            body: tab.widget,
+            body: IndexedStack(
+              index: tab.index,
+              children: widgetTabs.map((tab) => tab.widget).toList(),
+            ),
             drawer: const HomeDrawer(),
           );
         }),
