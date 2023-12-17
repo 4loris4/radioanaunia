@@ -1,3 +1,3 @@
-# radioanaunia
+# Radio Anaunia
 
-App per Radio Anaunia, radio locale che trasmette da Cles in provincia di Trento.
+App per Radio Anaunia, radio che trasmette da Cles in provincia di Trento.
