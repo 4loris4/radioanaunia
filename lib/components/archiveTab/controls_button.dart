@@ -33,7 +33,6 @@ class ControlsButton extends StatelessWidget {
 
         return IconButton(
           iconSize: _size,
-          splashRadius: _size * .75,
           padding: EdgeInsets.zero,
           icon: Icon(
             state == ProcessingState.completed

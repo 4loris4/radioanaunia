@@ -22,7 +22,10 @@ void main() async {
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(systemNavigationBarColor: Colors.transparent));
 
-  audioHandler = await AudioService.init(builder: () => AudioHandler());
+  audioHandler = await AudioService.init(
+    builder: () => AudioHandler(),
+    config: const AudioServiceConfig(androidNotificationIcon: "mipmap/notification_icon"),
+  );
 
   runApp(const ProviderScope(child: App()));
 }
