@@ -6,6 +6,14 @@ void openUrl(String url) async {
   } catch (_) {}
 }
 
+T? tryOrNull<T>(T Function() tryFunc) {
+  try {
+    return tryFunc();
+  } catch (_) {
+    return null;
+  }
+}
+
 extension StringExtension on String {
   String toCapitalized() => isEmpty ? "" : "${this[0].toUpperCase()}${substring(1).toLowerCase()}";
   String toCapitalizedWords() => replaceAll("(", "( ").split(" ").map((str) => str.toCapitalized()).join(" ").replaceAll("( ", "(");

@@ -1,41 +1,42 @@
 name: radioanaunia
-description: App per Radio Anaunia, radio locale che trasmette da Cles in provincia di Trento.
+description: "App per Radio Anaunia, radio locale che trasmette da Cles in provincia di Trento."
 
 publish_to: "none"
 
 version: 5.0.0+4
 
 environment:
-  sdk: '>=3.0.3 <4.0.0'
+  sdk: '>=3.3.3 <4.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  cupertino_icons: ^1.0.5
+  cupertino_icons: ^1.0.6
   flutter_series: ^0.1.2
   transparent_image: ^2.0.1
-  url_launcher: ^6.1.11
-  font_awesome_flutter: ^10.4.0
+  url_launcher: ^6.2.5
+  font_awesome_flutter: ^10.7.0
   volume_controller: ^2.0.7
-  marquee: ^2.2.3
-  auto_size_text: ^3.0.0
-  http: ^1.0.0
-  palette_generator: ^0.3.3+2
+  http: ^1.2.1
+  palette_generator: ^0.3.3+3
   image_fade: ^0.6.2
-  provider: ^6.0.5
-  just_audio: ^0.9.34
-  audio_video_progress_bar: ^2.0.1
+  just_audio: ^0.9.37
+  audio_video_progress_bar: ^2.0.2
   rxdart: ^0.27.7
-  intl: ^0.18.0
+  intl: ^0.18.1
+  audio_service: ^0.18.13
+  html_unescape: ^2.0.0
+  auto_scroll_text: ^0.0.7
+  flutter_riverpod: ^2.5.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^3.0.0
+  flutter_lints: ^3.0.2
   flutter_launcher_icons: ^0.13.1
-  flutter_native_splash: ^2.3.1
+  flutter_native_splash: ^2.4.0
 
 flutter:
   generate: true

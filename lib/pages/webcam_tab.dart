@@ -36,9 +36,10 @@ class _WebcamTabState extends State<WebcamTab> {
                 child: PadColumn(
                   spacing: 20,
                   children: _webcams.map((webcam) {
+                    final width = MediaQuery.of(context).size.width * .8;
                     return SizedBox(
-                      width: MediaQuery.of(context).size.width * .8,
-                      height: MediaQuery.of(context).size.width * .8 * 3 / 4,
+                      width: width,
+                      height: width * .75,
                       child: WebcamImage(url: webcam.url, description: webcam.description(context)),
                     );
                   }).toList(),

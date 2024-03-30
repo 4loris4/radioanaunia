@@ -1,19 +1,17 @@
+import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:radioanaunia/main.dart';
 import 'package:radioanaunia/pages/radio_tab.dart';
 
 class LiveControlsButton extends StatelessWidget {
-  final AudioPlayer audioPlayer;
-  final PlayerState? playerState;
+  final PlaybackState? playerState;
 
   const LiveControlsButton({
-    required this.audioPlayer,
     required this.playerState,
     super.key,
   });
 
-  final double _size = 60;
+  final double _size = 56;
 
   @override
   Widget build(BuildContext context) {
@@ -24,22 +22,21 @@ class LiveControlsButton extends StatelessWidget {
       width: _size,
       height: _size,
       child: () {
-        if (state == null || state == ProcessingState.buffering || state == ProcessingState.loading) {
-          return const Padding(padding: EdgeInsets.all(12), child: CircularProgressIndicator());
+        if (state == null || state == AudioProcessingState.buffering || state == AudioProcessingState.loading) {
+          return const Padding(padding: EdgeInsets.all(14), child: CircularProgressIndicator(strokeWidth: 3));
         }
 
         return IconButton(
           iconSize: _size,
-          splashRadius: _size * .75,
           padding: EdgeInsets.zero,
           icon: Icon(playing ? Icons.stop : Icons.play_arrow),
           tooltip: playing ? lang(context).stop : lang(context).play,
           onPressed: playing
-              ? audioPlayer.stop
+              ? audioHandler.stop
               : () async {
                   try {
-                    await audioPlayer.setUrl(radioURL);
-                    audioPlayer.play();
+                    await audioHandler.setUrl(radioURL);
+                    audioHandler.play();
                   } catch (_) {}
                 },
         );

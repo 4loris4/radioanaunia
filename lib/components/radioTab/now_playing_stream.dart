@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:html_unescape/html_unescape.dart';
 import 'package:http/http.dart' as http;
 import 'package:palette_generator/palette_generator.dart';
 import 'package:radioanaunia/utils_functions.dart';
@@ -29,10 +30,10 @@ class NowPlayingStream {
   Future<String?> _fetchCoverImage(String query) async {
     try {
       final response = await http.get(
-        Uri.parse("https://itunes.apple.com/search?media=music&country=us&term=${Uri.encodeComponent(query)}"),
+        Uri.parse("https://itunes.apple.com/search?media=music&country=it&term=${Uri.encodeComponent(query)}"),
         headers: {"Accept": "application/json"},
       );
-      return jsonDecode(response.body)["results"][0]["artworkUrl100"];
+      return (jsonDecode(response.body)["results"][0]["artworkUrl100"] as String).replaceAll("100x100bb.jpg", "1000x1000bb.jpg");
     } catch (_) {
       return null;
     }
@@ -45,7 +46,7 @@ class NowPlayingStream {
         headers: {"Accept": "application/json"},
       );
 
-      final responseText = response.body.substring(response.body.indexOf("=") + 1).trim();
+      final responseText = HtmlUnescape().convert(response.body).substring(response.body.indexOf("=") + 1).trim();
       if (responseText.isNotEmpty) return responseText;
     } catch (_) {}
     return null;
