@@ -8,7 +8,10 @@ ThemeData get lightTheme {
       secondary: Colors.grey,
     ),
     scaffoldBackgroundColor: Colors.white,
-    appBarTheme: AppBarTheme(backgroundColor: Colors.grey.shade700),
+    appBarTheme: AppBarTheme(
+      backgroundColor: Colors.grey.shade400,
+      foregroundColor: Colors.black,
+    ),
   );
 }
 
@@ -20,6 +23,9 @@ ThemeData get darkTheme {
       secondary: Colors.grey,
     ),
     scaffoldBackgroundColor: Colors.black,
-    appBarTheme: AppBarTheme(backgroundColor: Colors.grey.shade900),
+    appBarTheme: AppBarTheme(
+      backgroundColor: Colors.grey.shade900,
+      foregroundColor: Colors.white,
+    ),
   );
 }

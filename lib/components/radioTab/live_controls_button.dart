@@ -11,36 +11,29 @@ class LiveControlsButton extends StatelessWidget {
     super.key,
   });
 
-  final double _size = 56;
-
   @override
   Widget build(BuildContext context) {
-    final state = playerState?.processingState;
     final playing = playerState?.playing ?? false;
+    final loading = [AudioProcessingState.buffering, AudioProcessingState.loading, null].contains(playerState?.processingState);
 
-    return SizedBox(
-      width: _size,
-      height: _size,
-      child: () {
-        if (state == null || state == AudioProcessingState.buffering || state == AudioProcessingState.loading) {
-          return const Padding(padding: EdgeInsets.all(14), child: CircularProgressIndicator(strokeWidth: 3));
-        }
+    play() async {
+      try {
+        await audioHandler.setUrl(radioURL);
+        audioHandler.play();
+      } catch (_) {}
+    }
 
-        return IconButton(
-          iconSize: _size,
-          padding: EdgeInsets.zero,
-          icon: Icon(playing ? Icons.stop : Icons.play_arrow),
-          tooltip: playing ? lang(context).stop : lang(context).play,
-          onPressed: playing
-              ? audioHandler.stop
-              : () async {
-                  try {
-                    await audioHandler.setUrl(radioURL);
-                    audioHandler.play();
-                  } catch (_) {}
-                },
-        );
-      }(),
+    return IconButton(
+      iconSize: 56,
+      icon: loading //
+          ? const Padding(padding: EdgeInsets.all(10), child: CircularProgressIndicator())
+          : Icon(playing ? Icons.stop : Icons.play_arrow),
+      tooltip: loading //
+          ? null
+          : (playing ? lang(context).stop : lang(context).play),
+      onPressed: loading //
+          ? null
+          : (playing ? audioHandler.stop : play),
     );
   }
 }

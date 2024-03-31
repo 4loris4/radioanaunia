@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:audio_service/audio_service.dart';
 import 'package:just_audio/just_audio.dart';
 
@@ -26,6 +29,9 @@ class AudioHandler extends BaseAudioHandler {
       queueIndex: event.currentIndex,
     );
   }
+
+  @override
+  Future<void> onTaskRemoved() async => exit(0);
 
   @override
   Future<void> play() => _player.play();

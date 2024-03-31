@@ -7,24 +7,25 @@ final archiveProvider = FutureProvider<List<ArchiveItem>>((ref) => fetchArchiveI
 
 class ArchiveItem {
   final String name;
-  final String description;
   final List<String> urls;
 
   const ArchiveItem({
     required this.name,
-    required this.description,
     required this.urls,
   });
 
   static const nameKey = "name";
-  static const descriptionKey = "description";
   static const filesKey = "files";
   static const filePathKey = "path";
 
   factory ArchiveItem.fromJson(Map<String, dynamic> json) {
     return ArchiveItem(
-      name: json[nameKey],
-      description: json[descriptionKey],
+      name: () {
+        return (json[nameKey] as String).replaceAllMapped(
+          RegExp(r"[aeiou]'(?=\s|$)"), //cSpell:disable-line
+          (match) => {"a": "à", "e": "è", "i": "ì", "o": "ò", "u": "ù"}[match[0]![0]]!,
+        );
+      }(),
       urls: List<Map<String, dynamic>>.from(json[filesKey]).map((e) => Uri.parse("https://radioanaunia.it/archivio/${e[filePathKey]}").toString()).toList(),
     );
   }

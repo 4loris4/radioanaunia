@@ -19,7 +19,7 @@ abstract class TabAction {
 class TabActionWidget extends TabAction {
   final int index;
   final Widget widget;
-  final Widget? _appBarTitle;
+  final Widget Function(BuildContext context)? _appBarTitle;
 
   static int _nextIndex = 0;
 
@@ -27,11 +27,11 @@ class TabActionWidget extends TabAction {
     required super.title,
     required super.icon,
     required this.widget,
-    Widget? appBarTitle,
+    Widget Function(BuildContext context)? appBarTitle,
   })  : _appBarTitle = appBarTitle,
         index = _nextIndex++;
 
-  Widget appBarTitle(BuildContext context) => _appBarTitle ?? Text(title(context));
+  Widget appBarTitle(BuildContext context) => _appBarTitle?.call(context) ?? Text(title(context));
 }
 
 class TabActionLink extends TabAction {
@@ -45,22 +45,9 @@ class TabActionLink extends TabAction {
 }
 
 final tabs = List<TabAction>.unmodifiable(<TabAction>[
-  TabActionWidget(
-    title: (context) => lang(context).tabRadio,
-    icon: Icons.audiotrack,
-    widget: const RadioTab(),
-    appBarTitle: Image.asset("assets/logoTitle.png", height: 45),
-  ),
-  TabActionWidget(
-    title: (context) => lang(context).tabArchive,
-    icon: Icons.storage,
-    widget: const ArchiveTab(),
-  ),
-  TabActionWidget(
-    title: (context) => lang(context).tabWebcam,
-    icon: Icons.camera,
-    widget: const WebcamTab(),
-  ),
+  RadioTab.widget,
+  ArchiveTab.widget,
+  WebcamTab.widget,
   TabActionLink(
     title: (context) => lang(context).tabLive,
     icon: FontAwesomeIcons.youtube,
@@ -71,11 +58,7 @@ final tabs = List<TabAction>.unmodifiable(<TabAction>[
     icon: Icons.link,
     url: "https://radioanaunia.it",
   ),
-  TabActionWidget(
-    title: (context) => lang(context).tabContactUs,
-    icon: Icons.contact_mail,
-    widget: const ContactUsTab(),
-  ),
+  ContactUsTab.widget,
 ]);
 
 final widgetTabs = List<TabActionWidget>.unmodifiable(tabs.whereType<TabActionWidget>());

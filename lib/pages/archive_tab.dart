@@ -4,8 +4,15 @@ import 'package:flutter_series/flutter_series.dart';
 import 'package:radioanaunia/api/archive.dart';
 import 'package:radioanaunia/components/archiveTab/audio_player_tile.dart';
 import 'package:radioanaunia/main.dart';
+import 'package:radioanaunia/tabs.dart';
 
 class ArchiveTab extends ConsumerWidget {
+  static final widget = TabActionWidget(
+    title: (context) => lang(context).tabArchive,
+    icon: Icons.storage,
+    widget: const ArchiveTab(),
+  );
+
   const ArchiveTab({super.key});
 
   @override

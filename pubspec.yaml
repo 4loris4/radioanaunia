@@ -3,7 +3,7 @@ description: "App per Radio Anaunia, radio locale che trasmette da Cles in provi
 
 publish_to: "none"
 
-version: 5.0.0+4
+version: 5.1.0+5
 
 environment:
   sdk: '>=3.3.3 <4.0.0'

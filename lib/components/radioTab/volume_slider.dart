@@ -41,8 +41,10 @@ class _VolumeSliderState extends State<VolumeSlider> {
             const Icon(Icons.volume_down),
             Expanded(
               child: SliderTheme(
-                data: const SliderThemeData(
+                data: SliderThemeData(
                   trackHeight: 4,
+                  activeTrackColor: Theme.of(context).colorScheme.onSurface,
+                  inactiveTrackColor: Theme.of(context).colorScheme.onSurface.withOpacity(.15),
                   activeTickMarkColor: Colors.transparent,
                   inactiveTickMarkColor: Colors.transparent,
                 ),

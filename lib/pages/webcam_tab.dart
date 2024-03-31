@@ -2,8 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_series/flutter_series.dart';
 import 'package:radioanaunia/components/webcamTab/webcam_image.dart';
 import 'package:radioanaunia/main.dart';
+import 'package:radioanaunia/tabs.dart';
 
 class WebcamTab extends StatefulWidget {
+  static final widget = TabActionWidget(
+    title: (context) => lang(context).tabWebcam,
+    icon: Icons.camera,
+    widget: const WebcamTab(),
+  );
+
   const WebcamTab({super.key});
 
   @override

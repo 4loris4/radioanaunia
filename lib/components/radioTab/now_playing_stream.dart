@@ -24,7 +24,7 @@ class NowPlayingStream {
 
   NowPlayingStream() {
     _fetchData();
-    _updateTimer = Timer.periodic(const Duration(seconds: 15), (_) => _fetchData());
+    _updateTimer = Timer.periodic(const Duration(seconds: 10), (_) => _fetchData());
   }
 
   Future<String?> _fetchCoverImage(String query) async {

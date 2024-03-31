@@ -2,9 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_series/flutter_series.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:radioanaunia/main.dart';
+import 'package:radioanaunia/tabs.dart';
 import 'package:radioanaunia/utils_functions.dart';
 
 class ContactUsTab extends StatelessWidget {
+  static final widget = TabActionWidget(
+    title: (context) => lang(context).tabContactUs,
+    icon: Icons.contact_mail,
+    widget: const ContactUsTab(),
+  );
+
   const ContactUsTab({super.key});
 
   static final _values = <({IconData icon, String Function(BuildContext context) title, String subtitle, String url})>[

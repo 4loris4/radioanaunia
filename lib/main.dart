@@ -7,10 +7,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:radioanaunia/audio_handler.dart';
 import 'package:radioanaunia/components/app_bar_fix.dart';
 import 'package:radioanaunia/pages/home_drawer.dart';
+import 'package:radioanaunia/pages/radio_tab.dart';
 import 'package:radioanaunia/tabs.dart';
 import 'package:radioanaunia/themes.dart';
 
-final tabProvider = StateProvider<TabActionWidget>((ref) => widgetTabs.whereType<TabActionWidget>().first);
+final tabProvider = StateProvider<TabActionWidget>((ref) => RadioTab.widget);
 
 late final AudioHandler audioHandler;
 
@@ -30,11 +31,24 @@ void main() async {
   runApp(const ProviderScope(child: App()));
 }
 
-class App extends ConsumerWidget {
+class App extends ConsumerStatefulWidget {
   const App({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<App> createState() => _AppState();
+}
+
+class _AppState extends ConsumerState<App> {
+  @override
+  void initState() {
+    super.initState();
+    AudioService.notificationClicked.where((e) => e).listen((_) {
+      ref.read(tabProvider.notifier).state = RadioTab.widget;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final tab = ref.watch(tabProvider);
     return MaterialApp(
       title: "Radio Anaunia",

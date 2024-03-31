@@ -22,6 +22,7 @@ class WebcamImage extends StatelessWidget {
           child: const Center(child: CircularProgressIndicator()),
         ),
         FadeInImage.memoryNetwork(
+          key: Key("$url?t=${DateTime.now().millisecondsSinceEpoch}"),
           fadeInDuration: const Duration(milliseconds: 200),
           placeholder: kTransparentImage,
           image: "$url?t=${DateTime.now().millisecondsSinceEpoch}",

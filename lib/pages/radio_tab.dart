@@ -9,11 +9,23 @@ import 'package:radioanaunia/components/radioTab/now_playing_stream.dart';
 import 'package:radioanaunia/components/radioTab/scroll_text.dart';
 import 'package:radioanaunia/components/radioTab/volume_slider.dart';
 import 'package:radioanaunia/main.dart';
+import 'package:radioanaunia/tabs.dart';
 import 'package:radioanaunia/utils_functions.dart';
 
 const radioURL = "https://s6.mediastreaming.it/m/9134?ext=.mp3";
 
 class RadioTab extends StatefulWidget {
+  static final widget = TabActionWidget(
+    title: (context) => lang(context).tabRadio,
+    icon: Icons.audiotrack,
+    widget: const RadioTab(),
+    appBarTitle: (context) => Image.asset(
+      "assets/logoTitle.png",
+      height: 45,
+      color: (Theme.of(context).brightness == Brightness.dark) ? Colors.white : null,
+    ),
+  );
+
   const RadioTab({super.key});
 
   @override
@@ -22,6 +34,19 @@ class RadioTab extends StatefulWidget {
 
 class _RadioTabState extends State<RadioTab> {
   final _nowPlaying = NowPlayingStream();
+
+  @override
+  void initState() {
+    super.initState();
+    _nowPlaying.stream.listen((audioDetails) {
+      audioHandler.mediaItem.add(MediaItem(
+        id: audioDetails.title,
+        title: audioDetails.title,
+        artist: audioDetails.author,
+        artUri: tryOrNull(() => Uri.parse(audioDetails.cover!)),
+      ));
+    });
+  }
 
   @override
   void dispose() {
@@ -111,16 +136,6 @@ class _RadioTabState extends State<RadioTab> {
         stream: _nowPlaying.stream,
         builder: (context, snapshot) {
           final audioDetails = snapshot.data;
-
-          if (audioDetails != null) {
-            audioHandler.mediaItem.add(MediaItem(
-              id: audioDetails.title,
-              title: audioDetails.title,
-              artist: audioDetails.author,
-              artUri: tryOrNull(() => Uri.parse(audioDetails.cover!)),
-            ));
-          }
-
           return StreamBuilder<PlaybackState>(
             stream: audioHandler.playbackState,
             builder: (context, snapshot) {
